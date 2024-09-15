@@ -13,16 +13,16 @@ wget https://gitlab.com/-/project/31927362/uploads/1164b1c240e4cdacc652b3dd5953c
 # seccomp 242
 
 wget http://http://launchpadlibrarian.net/723477741/gpgv_2.4.4-2ubuntu17_amd64.deb
-dpkg -i gpgv_2.4.4-2ubuntu17_amd64.deb
+sudo dpkg -i gpgv_2.4.4-2ubuntu17_amd64.deb
 
 wget http://launchpadlibrarian.net/743869696/libapt-pkg6.0t64_2.8.2_amd64.deb
-dpkg -i ibapt-pkg6.0t64_2.8.2_amd64.deb
+sudo dpkg -i ibapt-pkg6.0t64_2.8.2_amd64.deb
 
 wget http://launchpadlibrarian.net/699871466/ubuntu-keyring_2023.11.28.1_all.deb
-dpkg -i ubuntu-keyring_2023.11.28.1_all.deb
+sudo dpkg -i ubuntu-keyring_2023.11.28.1_all.deb
 
 wget http://launchpadlibrarian.net/742984273/libseccomp2_2.5.5-1ubuntu3.1_amd64.deb
-dpkg -i libseccomp2_2.5.5-1ubuntu3.1_amd64.deb
+sudo dpkg -i libseccomp2_2.5.5-1ubuntu3.1_amd64.deb
 
 function download {
 
