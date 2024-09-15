@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-wget https://gitlab.com/-/project/31927362/uploads/1164b1c240e4cdacc652b3dd5953c3d1/nala_0.15.4_all.deb
+# wget https://gitlab.com/-/project/31927362/uploads/1164b1c240e4cdacc652b3dd5953c3d1/nala_0.15.4_all.deb
 
 # gpgv
 
