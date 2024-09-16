@@ -16,6 +16,6 @@ fi
 
 
 if [[ "${OPERTION}" != "bad" ]]; then
-    sudo badblocks -v /dev/$2 > badsectors.txt
-    sudo e2fsck -l badsectors.txt /dev/$2
+    sudo e2fsck -c /dev/$2 
+    sudo fsck.ext4 -c /dev/$2
 fi
