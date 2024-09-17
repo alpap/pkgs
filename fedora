@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+# Change hostname
+sudo hostnamectl set-hostname --transient banana
+# when creating the main user add him to docker and root
+
+
+# install ssh service
+sudo dnf update
+sudo dnf install -y openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshd
+sudo systemctl status sshd
+sudo ss -lt
+
+# import ssh keys
+sudo dnf install -y python3-pip
+pip3 install --upgrade pip
+pip3 install ssh-import-id
+ssh-import-id gh:"$1"
+
+
+# remove password login
+sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+
+# fix mounts
+sudo mkdir -p /mnt/raid
+sudo mkdir -p /mnt/storage
+
+STORAGE=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID,FSTYPE,LABEL | grep sdb1)
+sudo echo "UUID=$(echo $STORAGE| cut -d' ' -f4) /mnt/storage            $(echo $STORAGE| cut -d' ' -f5)    defaults        0 0" | sudo tee -a /etc/fstab
+RAID=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID,FSTYPE,LABEL | grep md127)
+sudo echo "UUID=$(echo $RAID| cut -d' ' -f4) /mnt/raid               $(echo $RAID| cut -d' ' -f5)    defaults        0 0" | sudo tee -a  /etc/fstab
+
+sudo mount -t auto /dev/md127 /mnt/raid
+sudo mount -t auto /dev/sdb1 /mnt/storage
+
+# set static ip
+# https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
+nmcli connection
+sudo nmcli connection modify enp3s0 ipv4.addresses 192.168.0.200/24
+sudo nmcli connection modify enp3s0 ipv4.gateway 192.168.0.1
+sudo nmcli connection modify enp3s0 ipv4.method manual
+sudo nmcli connection modify enp3s0 ipv4.dns "1.1.1.1,1.0.0.1"
+
+sudo nmcli connection up enp3s0
+sudo nmcli device show enp3s0
+
+
+# install docker
+sudo dnf remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine
+
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install -y ydocker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+if [ -f "/etc/docker/daemon.json" ]; then
+  sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
+else
+  sudo mkdir -p /etc/docker/
+  sudo tee /etc/docker/daemon.json <<EOF
+{
+  "data-root": "/mnt/raid/docker",
+  "storage-driver": "overlay2",
+  "selinux-enabled": true
+}
+EOF
+fi
+
+usermod -aG docker "$USER"
+sudo systemctl enable docker
+sudo systemctl start docker
+
+
+
+# cloudflared
+
+wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudflared-linux-x86_64.rpm
+sudo dnf install cloudflared-linux-x86_64.rpm
+
+# addons
+sudo dnf install -y micro nodejs22 zsh
+
+curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | sudo bash
+
+curl -s https://packagecloud.io/install/repositories/tstack/lnav/script.rpm.sh | sudo bash
+sudo dnf install -y lnav
+
+curl -fsSL https://tailscale.com/install.sh | sh
+# sudo tailscale up
