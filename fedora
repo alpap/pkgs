@@ -24,6 +24,7 @@ ssh-import-id gh:"$1"
 
 # remove password login
 sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo systemctl restart sshd
 
 # fix mounts
 #sudo mkdir -p /mnt/raid
