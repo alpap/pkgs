@@ -94,7 +94,10 @@ rm cloudflared-linux-x86_64.rpm
 # addons
 sudo dnf install -y micro nodejs22 zsh wget ncdu htop testdisk
 
-
+#make an ssh key for s-builder
+ssh-keygen -t ed25519 -C "s-peper@hotmail.com" -q -N ""
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
 
 # tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
