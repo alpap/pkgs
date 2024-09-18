@@ -25,8 +25,9 @@ ssh-import-id gh:"$USER"
 sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
-# disable bluetooth
+# disable bluetooth and wifi
 sudo systemctl disable bluetooth.service
+sudo ifconfig wlp4s0 down
 
 # set server name
 sudo hostnamectl set-hostname --pretty 🍌
