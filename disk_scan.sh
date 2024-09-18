@@ -4,6 +4,8 @@ OPERATION=$1
 DISK="/dev/${2}"
 
 
+echo "Choose smart (scan) or bad (fsck repair)"
+
 if [[ ! $(which smartctl) ]]; then
     sudo dnf install -y smartmontools
 fi
