@@ -94,7 +94,7 @@ sudo dnf install -y cloudflared-linux-x86_64.rpm
 rm cloudflared-linux-x86_64.rpm
 
 # addons
-sudo dnf install -y micro nodejs22 zsh wget ncdu 
+sudo dnf install -y micro nodejs22 zsh wget ncdu htop
 
 
 
