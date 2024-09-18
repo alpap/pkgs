@@ -3,16 +3,22 @@
 OPERATION=$1
 DISK="/dev/${2}"
 
+
+if [[ ! $(which smartctl) ]]; then
+    sudo dnf install -y smartmontools
+fi
+
+
 if [[ "${OPERATION}" == "smart" ]]; then
     echo "Running smart scan"
     #sudo apt update
     #sudo apt install smartmontools
-    sudo dnf install -y smartmontools
+
     sudo smartctl -H /dev/$2
     sudo smartctl -t long /dev/$2
     sudo smartctl -t offline /dev/$2
     sudo smartctl -x /dev/$2
-    smartctl -a /dev/$2
+    sudo smartctl -a /dev/$2
 fi
 
 
