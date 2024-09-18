@@ -100,7 +100,7 @@ sudo dnf install -y micro nodejs22 zsh wget ncdu
 
 # tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
-sudo tailscale up
+# sudo tailscale up
 
 # restart
 sudo reboot
