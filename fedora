@@ -24,16 +24,16 @@ ssh-import-id gh:"$1"
 sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 
 # fix mounts
-sudo mkdir -p /mnt/raid
-sudo mkdir -p /mnt/storage
+#sudo mkdir -p /mnt/raid
+#sudo mkdir -p /mnt/storage
 
-STORAGE=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID,FSTYPE,LABEL | grep sdb1)
-sudo echo "UUID=$(echo $STORAGE| cut -d' ' -f4) /mnt/storage            $(echo $STORAGE| cut -d' ' -f5)    defaults        0 0" | sudo tee -a /etc/fstab
-RAID=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID,FSTYPE,LABEL | grep md127)
-sudo echo "UUID=$(echo $RAID| cut -d' ' -f4) /mnt/raid               $(echo $RAID| cut -d' ' -f5)    defaults        0 0" | sudo tee -a  /etc/fstab
+#STORAGE=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID,FSTYPE,LABEL | grep sdb1)
+#sudo echo "UUID=$(echo $STORAGE| cut -d' ' -f4) /mnt/storage            $(echo $STORAGE| cut -d' ' -f5)    defaults        0 0" | sudo tee -a /etc/fstab
+#RAID=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID,FSTYPE,LABEL | grep md127)
+#sudo echo "UUID=$(echo $RAID| cut -d' ' -f4) /mnt/raid               $(echo $RAID| cut -d' ' -f5)    defaults        0 0" | sudo tee -a  /etc/fstab
 
-sudo mount -t auto /dev/md127 /mnt/raid
-sudo mount -t auto /dev/sdb1 /mnt/storage
+# sudo mount -t auto /dev/md127 /mnt/raid
+# sudo mount -t auto /dev/sdb1 /mnt/storage
 
 # set static ip
 # https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
