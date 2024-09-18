@@ -2,31 +2,31 @@
 
 set -e
 
-# set hostname
-sudo hostnamectl set-hostname --pretty 🍌
-sudo hostnamectl set-hostname --static banana
+# # set hostname
+# sudo hostnamectl set-hostname --pretty 🍌
+# sudo hostnamectl set-hostname --static banana
 
-# install ssh service
-sudo dnf update -y
-sudo dnf install -y openssh-server
-sudo systemctl enable sshd
-sudo systemctl start sshd
-sudo systemctl status sshd
-sudo ss -lt
+# # install ssh service
+# sudo dnf update -y
+# sudo dnf install -y openssh-server
+# sudo systemctl enable sshd
+# sudo systemctl start sshd
+# sudo systemctl status sshd
+# sudo ss -lt
 
-# import ssh keys
-sudo dnf install -y python3-pip
-pip3 install --upgrade pip
-pip3 install ssh-import-id
-ssh-import-id gh:"$USER"
+# # import ssh keys
+# sudo dnf install -y python3-pip
+# pip3 install --upgrade pip
+# pip3 install ssh-import-id
+# ssh-import-id gh:"$USER"
 
-# remove password login
-sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo systemctl restart sshd
+# # remove password login
+# sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+# sudo systemctl restart sshd
 
-# disable bluetooth and wifi
-sudo systemctl disable bluetooth.service
-sudo ifconfig wlp4s0 down
+# # disable bluetooth and wifi
+# sudo systemctl disable bluetooth.service
+# sudo ifconfig wlp4s0 down
 
 # fix mounts
 #sudo mkdir -p /mnt/raid
@@ -43,67 +43,62 @@ sudo ifconfig wlp4s0 down
 
 # set static ip
 # https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
-nmcli connection
-sudo nmcli connection modify enp3s0 ipv4.addresses 192.168.0.200/24
-sudo nmcli connection modify enp3s0 ipv4.gateway 192.168.0.1
-sudo nmcli connection modify enp3s0 ipv4.method manual
-sudo nmcli connection modify enp3s0 ipv4.dns "1.1.1.1,1.0.0.1"
+# nmcli connection
+# sudo nmcli connection modify enp3s0 ipv4.addresses 192.168.0.200/24
+# sudo nmcli connection modify enp3s0 ipv4.gateway 192.168.0.1
+# sudo nmcli connection modify enp3s0 ipv4.method manual
+# sudo nmcli connection modify enp3s0 ipv4.dns "1.1.1.1,1.0.0.1"
 
-sudo nmcli connection up enp3s0
-sudo nmcli device show enp3s0
+# sudo nmcli connection up enp3s0
+# sudo nmcli device show enp3s0
 
 
-# # install docker
-# sudo dnf remove docker \
-#                   docker-client \
-#                   docker-client-latest \
-#                   docker-common \
-#                   docker-latest \
-#                   docker-latest-logrotate \
-#                   docker-logrotate \
-#                   docker-selinux \
-#                   docker-engine-selinux \
-#                   docker-engine
+# install docker
+sudo dnf remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine
 
-# sudo dnf install -y dnf-plugins-core
-# sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-# sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# if [ -f "/etc/docker/daemon.json" ]; then
-#   sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
-# else
-#   sudo mkdir -p /etc/docker/
-#   sudo tee /etc/docker/daemon.json <<EOF
-# {
-#   "data-root": "/mnt/raid/docker",
-#   "storage-driver": "overlay2",
-#   "selinux-enabled": true
-# }
-# EOF
-# fi
+if [ -f "/etc/docker/daemon.json" ]; then
+  sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
+else
+  sudo mkdir -p /etc/docker/
+  sudo tee /etc/docker/daemon.json <<EOF
+{
+  "data-root": "/mnt/raid/docker",
+  "storage-driver": "overlay2",
+  "selinux-enabled": true
+}
+EOF
+fi
 
-# sudo usermod -aG docker "$USER"
-# sudo systemctl enable docker
-# sudo systemctl start docker
+sudo usermod -aG docker "$USER"
+sudo systemctl enable docker
+sudo systemctl start docker
 
 
 
 # cloudflared
 
-# wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudflared-linux-x86_64.rpm
-# sudo dnf install -y cloudflared-linux-x86_64.rpm
-# rm cloudflared-linux-x86_64.rpm
+wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudflared-linux-x86_64.rpm
+sudo dnf install -y cloudflared-linux-x86_64.rpm
+rm cloudflared-linux-x86_64.rpm
 
-# addons
-# sudo dnf install -y micro nodejs22 zsh
+addons
+sudo dnf install -y micro nodejs22 zsh
 
-curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | sudo bash
-
-curl -s https://packagecloud.io/install/repositories/tstack/lnav/script.rpm.sh | sudo bash
-sudo dnf install -y lnav
-
-# curl -fsSL https://tailscale.com/install.sh | sh
-# sudo tailscale up
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up
 
 # restart
-sudo reboot
+# sudo reboot
