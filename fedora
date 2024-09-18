@@ -82,27 +82,27 @@ sudo nmcli device show enp3s0
 # EOF
 # fi
 
-sudo usermod -aG docker "$USER"
-sudo systemctl enable docker
-sudo systemctl start docker
+# sudo usermod -aG docker "$USER"
+# sudo systemctl enable docker
+# sudo systemctl start docker
 
 
 
 # cloudflared
 
-wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudflared-linux-x86_64.rpm
-sudo dnf install -y cloudflared-linux-x86_64.rpm
-rm cloudflared-linux-x86_64.rpm
+# wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudflared-linux-x86_64.rpm
+# sudo dnf install -y cloudflared-linux-x86_64.rpm
+# rm cloudflared-linux-x86_64.rpm
 
 # addons
-sudo dnf install -y micro nodejs22 zsh
+# sudo dnf install -y micro nodejs22 zsh
 
 curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | sudo bash
 
 curl -s https://packagecloud.io/install/repositories/tstack/lnav/script.rpm.sh | sudo bash
 sudo dnf install -y lnav
 
-curl -fsSL https://tailscale.com/install.sh | sh
+# curl -fsSL https://tailscale.com/install.sh | sh
 # sudo tailscale up
 
 # restart
