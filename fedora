@@ -150,6 +150,10 @@ gc() {
     git commit -am "\$(git status --porcelain)"
 }
 
+his() {
+    history | grep \$1
+}
+
 alias ls="exa -h"
 export TERM='xterm-256color'
 export STARSHIP_CONFIG=~/.config/starship.toml
