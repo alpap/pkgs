@@ -29,9 +29,8 @@ sudo systemctl restart sshd
 sudo systemctl disable bluetooth.service
 
 # set server name
-sudo hostnamectl set-hostname --pretty banana
+sudo hostnamectl set-hostname --pretty 🍌
 sudo hostnamectl set-hostname --static banana
-sudo hostnamectl set-hostname --transient banana
 
 # fix mounts
 #sudo mkdir -p /mnt/raid
