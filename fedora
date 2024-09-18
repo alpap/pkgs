@@ -102,7 +102,7 @@ curl -fsSL https://tailscale.com/install.sh | sh
 
 
 # addons
-sudo dnf install -y micro nodejs22 zsh wget ncdu htop testdisk
+sudo dnf install -y micro nodejs22 zsh wget ncdu htop testdisk git
 
 # external addons
 
