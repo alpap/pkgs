@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-OPERAION=$1
+OPERATION=$1
 DISK="/dev/${2}"
 
 
@@ -15,7 +15,7 @@ if [[ "${OPERATION}" == "smart" ]]; then
 fi
 
 
-if [[ "${OPERTION}" != "bad" ]]; then
+if [[ "${OPERATION}" != "bad" ]]; then
     sudo e2fsck -c /dev/$2 
     sudo fsck.ext4 -c /dev/$2
 fi
