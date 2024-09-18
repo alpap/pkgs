@@ -19,7 +19,7 @@ sudo ss -lt
 sudo dnf install -y python3-pip
 pip3 install --upgrade pip
 pip3 install ssh-import-id
-ssh-import-id gh:"$1"
+ssh-import-id gh:"$USER"
 
 
 # remove password login
