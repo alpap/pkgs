@@ -29,11 +29,11 @@ sudo systemctl disable bluetooth.service
 sudo ifconfig wlp4s0 down
 
 # fix mounts
-# sudo mkdir -p /mnt/raid
+# sudo mkdir -p /mnt/storage
 # STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
 # echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
 
-# sudo mkdir -p /mnt/storage
+# sudo mkdir -p /mnt/raid
 # RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md0)
 # echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cut -d' ' -f3)     defaults        0 0" | sudo tee -a  /etc/fstab
 
