@@ -24,7 +24,7 @@ if [[ "${OPERATION}" == "smart" ]]; then
 fi
 
 
-if [[ "${OPERATION}" != "bad" ]]; then
+if [[ "${OPERATION}" == "bad" ]]; then
     sudo e2fsck -c /dev/$2 
     sudo fsck.ext4 -c /dev/$2
 fi
