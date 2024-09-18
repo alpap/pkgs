@@ -20,7 +20,6 @@ if [[ "${OPERATION}" == "smart" ]]; then
     sudo smartctl -t long /dev/$2
     sudo smartctl -t offline /dev/$2
     sudo smartctl -x /dev/$2
-    sudo smartctl -a /dev/$2
 fi
 
 
