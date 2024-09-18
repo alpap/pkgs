@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Change hostname
 sudo hostnamectl set-hostname --transient banana
 # when creating the main user add him to docker and root
 
 
 # install ssh service
-sudo dnf update
+sudo dnf update -y
 sudo dnf install -y openssh-server
 sudo systemctl enable sshd
 sudo systemctl start sshd
@@ -76,7 +78,7 @@ else
 EOF
 fi
 
-usermod -aG docker "$USER"
+suod usermod -aG docker "$USER"
 sudo systemctl enable docker
 sudo systemctl start docker
 
