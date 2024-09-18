@@ -26,6 +26,10 @@ ssh-import-id gh:"$USER"
 sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
+# disable bluetooth
+
+sudo systemctl disable bluetooth.service
+
 # fix mounts
 #sudo mkdir -p /mnt/raid
 #sudo mkdir -p /mnt/storage
