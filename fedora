@@ -35,9 +35,9 @@ sudo ifconfig wlp4s0 down
 # sudo mount -t auto /dev/sdb1 /mnt/storage
 
 # sudo mkdir -p /mnt/storage
-# RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md127)
+# RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md0)
 # sudo echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cut -d' ' -f3)    defaults        0 0" | sudo tee -a  /etc/fstab
-# sudo mount -t auto /dev/md127 /mnt/raid
+# sudo mount -t auto /dev/md0 /mnt/raid
 
 
 
