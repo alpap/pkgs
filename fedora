@@ -21,14 +21,17 @@ pip3 install --upgrade pip
 pip3 install ssh-import-id
 ssh-import-id gh:"$USER"
 
-
 # remove password login
 sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
 # disable bluetooth
-
 sudo systemctl disable bluetooth.service
+
+# set server name
+sudo hostnamectl set-hostname --pretty banana
+sudo hostnamectl set-hostname --static banana
+sudo hostnamectl set-hostname --transient banana
 
 # fix mounts
 #sudo mkdir -p /mnt/raid
@@ -68,7 +71,7 @@ sudo dnf remove docker \
 
 sudo dnf install -y dnf-plugins-core
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf install -y ydocker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 if [ -f "/etc/docker/daemon.json" ]; then
   sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
