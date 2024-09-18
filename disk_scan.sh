@@ -5,8 +5,9 @@ DISK="/dev/${2}"
 
 if [[ "${OPERATION}" == "smart" ]]; then
     echo "Running smart scan"
-    suod apt update
-    sudo apt install smartmontools
+    #sudo apt update
+    #sudo apt install smartmontools
+    sudo dnf install -y smartmontools
     sudo smartctl -H /dev/$2
     sudo smartctl -t long /dev/$2
     sudo smartctl -t offline /dev/$2
