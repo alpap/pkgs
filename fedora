@@ -2,10 +2,9 @@
 
 set -e
 
-# Change hostname
-sudo hostnamectl set-hostname --transient banana
-# when creating the main user add him to docker and root
-
+# set hostname
+sudo hostnamectl set-hostname --pretty 🍌
+sudo hostnamectl set-hostname --static banana
 
 # install ssh service
 sudo dnf update -y
@@ -29,21 +28,18 @@ sudo systemctl restart sshd
 sudo systemctl disable bluetooth.service
 sudo ifconfig wlp4s0 down
 
-# set server name
-sudo hostnamectl set-hostname --pretty 🍌
-sudo hostnamectl set-hostname --static banana
-
 # fix mounts
 #sudo mkdir -p /mnt/raid
-#sudo mkdir -p /mnt/storage
+#STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
+#sudo echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)    defaults        0 0" | sudo tee -a /etc/fstab
+#sudo mount -t auto /dev/sdb1 /mnt/storage
 
-#STORAGE=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID,FSTYPE,LABEL | grep sdb1)
-#sudo echo "UUID=$(echo $STORAGE| cut -d' ' -f4) /mnt/storage            $(echo $STORAGE| cut -d' ' -f5)    defaults        0 0" | sudo tee -a /etc/fstab
-#RAID=$(lsblk -o NAME,SIZE,TYPE,MOUNTPOINT,UUID,FSTYPE,LABEL | grep md127)
-#sudo echo "UUID=$(echo $RAID| cut -d' ' -f4) /mnt/raid               $(echo $RAID| cut -d' ' -f5)    defaults        0 0" | sudo tee -a  /etc/fstab
+sudo mkdir -p /mnt/storage
+RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md127)
+sudo echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cut -d' ' -f3)    defaults        0 0" | sudo tee -a  /etc/fstab
+sudo mount -t auto /dev/md127 /mnt/raid
 
-# sudo mount -t auto /dev/md127 /mnt/raid
-# sudo mount -t auto /dev/sdb1 /mnt/storage
+
 
 # set static ip
 # https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
@@ -108,3 +104,6 @@ sudo dnf install -y lnav
 
 curl -fsSL https://tailscale.com/install.sh | sh
 # sudo tailscale up
+
+# restart
+sudo reboot
