@@ -91,9 +91,6 @@ wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudf
 sudo dnf install -y cloudflared-linux-x86_64.rpm
 rm cloudflared-linux-x86_64.rpm
 
-# addons
-sudo dnf install -y micro nodejs22 zsh wget ncdu htop testdisk
-
 #make an ssh key for s-builder
 ssh-keygen -t ed25519 -C "s-peper@hotmail.com" -q -N ""
 eval "$(ssh-agent -s)"
@@ -102,6 +99,75 @@ ssh-add ~/.ssh/id_ed25519
 # tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
 # sudo tailscale up
+
+
+# addons
+sudo dnf install -y micro nodejs22 zsh wget ncdu htop testdisk
+
+# external addons
+
+[[ -d ~/temp ]] && rm -rf ~/temp
+mkdir ~/temp && cd ~/temp || exit 1
+
+if [[ ! $(which exa) ]]; then
+    EXA_VERSION=v0.10.1
+    wget https://github.com/ogham/exa/releases/download/${EXA_VERSION}/exa-linux-x86_64-musl-${EXA_VERSION}.zip
+    unzip exa-linux-x86_64-musl-${EXA_VERSION}.zip
+    sudo mv ./bin/exa /usr/bin
+fi
+
+if [[ ! $(which starship) ]]; then
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
+cd ..
+rm -rf  ~/temp
+
+# bash rc
+cat <<EOT >>~/.bashrc
+gcp() {
+    if [[ \$1 ]]; then
+        git add "\$@"
+    else
+        git add .
+    fi
+    git commit -am "\$(git status --porcelain)"
+    local STATUS=\$(git push 2>&1)
+    echo \$STATUS
+    if [[ \$(echo \$STATUS | grep "upstream") ]]; then
+        echo "Creating branch \n"
+        local COMMAND=\$(echo \$STATUS | sed '4p;d')
+        bash -c \$COMMAND
+    fi
+}
+
+gc() {
+    if [[ \$1 ]]; then
+        git add "\$@"
+    else
+        git add .
+    fi
+    git commit -am "\$(git status --porcelain)"
+}
+
+alias ls="exa -h"
+export TERM='xterm-256color'
+export STARSHIP_CONFIG=~/.config/starship.toml
+
+eval "source <(/usr/local/bin/starship init zsh --print-full-init)"
+EOT
+
+# starship config
+[[ ! -d ~/.config ]] && mkdir ~/.config
+
+cat <<EOT >~/.config/starship.toml
+[container]
+disabled = true
+
+[sudo]
+disabled = false
+symbol = '💀 '
+EOT
 
 # restart
 sudo reboot
