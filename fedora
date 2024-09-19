@@ -94,8 +94,8 @@ set -ex
 # rm cloudflared-linux-x86_64.rpm
 
 #make an ssh key for s-builder
-ssh-keygen -t ed25519 -C "s-peper@hotmail.com" -q -N "" -f ~/.ssh/id_rsa
-eval "$(ssh-agent -s)"
+# ssh-keygen -t ed25519 -C "s-peper@hotmail.com" -q -N "" -f ~/.ssh/id_rsa
+# eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
 
 # tailscale
