@@ -88,8 +88,6 @@ sudo usermod -aG docker "$USER"
 sudo systemctl enable docker
 sudo systemctl start docker
 
-
-
 # cloudflared
 wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudflared-linux-x86_64.rpm
 sudo dnf install -y cloudflared-linux-x86_64.rpm
