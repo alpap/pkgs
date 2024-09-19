@@ -174,7 +174,7 @@ disabled = true
 
 [sudo]
 disabled = false
-symbol = '💀 '
+symbol = '🍌 '
 EOT
 
 # restart
