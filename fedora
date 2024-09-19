@@ -27,18 +27,19 @@ ssh-import-id gh:"$USER"
 sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
-# disable bluetooth and wifi
-sudo systemctl disable bluetooth.service
-sudo ifconfig wlp4s0 down
+# disable bluetooth and wifi 
+# disabled from bios !!!
+# sudo systemctl disable bluetooth.service
+# sudo ifconfig wlp4s0 down
 
 # fix mounts
-# sudo mkdir -p /mnt/storage
-# STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
-# echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
+sudo mkdir -p /mnt/storage
+STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
+echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
 
-# sudo mkdir -p /mnt/raid
-# RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md0)
-# echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cut -d' ' -f3)     defaults        0 0" | sudo tee -a  /etc/fstab
+sudo mkdir -p /mnt/raid
+RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md0)
+echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cut -d' ' -f3)     defaults        0 0" | sudo tee -a  /etc/fstab
 
 sudo systemctl daemon-reload
 
@@ -54,38 +55,38 @@ sudo nmcli connection up enp3s0
 sudo nmcli device show enp3s0
 
 
-# # install docker
-# sudo dnf remove docker \
-#                   docker-client \
-#                   docker-client-latest \
-#                   docker-common \
-#                   docker-latest \
-#                   docker-latest-logrotate \
-#                   docker-logrotate \
-#                   docker-selinux \
-#                   docker-engine-selinux \
-#                   docker-engine
+# install docker
+sudo dnf remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine
 
-# sudo dnf install -y dnf-plugins-core
-# sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-# sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# if [ -f "/etc/docker/daemon.json" ]; then
-#   sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
-# else
-#   sudo mkdir -p /etc/docker/
-#   sudo tee /etc/docker/daemon.json <<EOF
-# {
-#   "data-root": "/mnt/raid/docker",
-#   "storage-driver": "overlay2",
-#   "selinux-enabled": true
-# }
-# EOF
-# fi
+if [ -f "/etc/docker/daemon.json" ]; then
+  sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
+else
+  sudo mkdir -p /etc/docker/
+  sudo tee /etc/docker/daemon.json <<EOF
+{
+  "data-root": "/mnt/raid/docker",
+  "storage-driver": "overlay2",
+  "selinux-enabled": true
+}
+EOF
+fi
 
-# sudo usermod -aG docker "$USER"
-# sudo systemctl enable docker
-# sudo systemctl start docker
+sudo usermod -aG docker "$USER"
+sudo systemctl enable docker
+sudo systemctl start docker
 
 
 
