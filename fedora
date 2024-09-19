@@ -183,3 +183,5 @@ sudo reboot
 
 #disable SElinux
 # sudo setenforce 0
+
+# When running Docker with SELinux in enforcing mode, containers may fail to start due to permission issues. Ensure necessary SELinux policies are in place, set “selinux-enabled”: true in /etc/docker/daemon.json, and check SELinux audit logs for denied permissions. If issues persist, provide more details about the error messages.
