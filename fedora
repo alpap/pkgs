@@ -179,3 +179,7 @@ EOT
 
 # restart
 sudo reboot
+
+
+#disable SElinux
+# sudo setenforce 0
