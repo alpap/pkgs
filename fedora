@@ -96,7 +96,7 @@ set -ex
 #make an ssh key for s-builder
 # ssh-keygen -t ed25519 -C "s-peper@hotmail.com" -q -N "" -f ~/.ssh/id_rsa
 # eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa
+# ssh-add
 
 # tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
