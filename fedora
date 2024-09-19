@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
-# set hostname
-sudo hostnamectl set-hostname --pretty 🍌
-sudo hostnamectl set-hostname --static banana
+# # set hostname
+# sudo hostnamectl set-hostname --pretty 🍌
+# sudo hostnamectl set-hostname --static banana
 
-# expand size 
-sudo lvextend -L+216G --resizefs /dev/mapper/fedora-root
+# # expand size 
+# sudo lvextend -L+216G --resizefs /dev/mapper/fedora-root
 
-# install ssh service
-sudo dnf update -y
-sudo dnf install -y openssh-server
-sudo systemctl enable sshd
-sudo systemctl start sshd
-sudo systemctl status sshd
-sudo ss -lt
+# # install ssh service
+# sudo dnf update -y
+# sudo dnf install -y openssh-server
+# sudo systemctl enable sshd
+# sudo systemctl start sshd
+# sudo systemctl status sshd
+# sudo ss -lt
 
-# import ssh keys
-sudo dnf install -y python3-pip
-pip3 install --upgrade pip
-pip3 install ssh-import-id
+# # import ssh keys
+# sudo dnf install -y python3-pip
+# pip3 install --upgrade pip
+# pip3 install ssh-import-id
 ssh-import-id gh:"$USER"
 
 # remove password login
