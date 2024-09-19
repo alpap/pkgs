@@ -104,7 +104,7 @@ curl -fsSL https://tailscale.com/install.sh | sh
 
 
 # addons
-sudo dnf install -y micro nodejs22 zsh wget ncdu htop testdisk git
+sudo dnf install -y micro nodejs22 wget ncdu htop testdisk git
 
 # external addons
 
@@ -162,7 +162,7 @@ alias ls="exa -h"
 export TERM='xterm-256color'
 export STARSHIP_CONFIG=~/.config/starship.toml
 
-eval "source <(/usr/local/bin/starship init zsh --print-full-init)"
+eval "source <(/usr/local/bin/starship init bash)"
 EOT
 
 # starship config
