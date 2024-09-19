@@ -21,80 +21,80 @@ set -ex
 # sudo dnf install -y python3-pip
 # pip3 install --upgrade pip
 # pip3 install ssh-import-id
-ssh-import-id gh:"$USER"
+# ssh-import-id gh:"$USER"
 
-# remove password login
-sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo systemctl restart sshd
+# # remove password login
+# sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+# sudo systemctl restart sshd
 
-# disable bluetooth and wifi 
-# disabled from bios !!!
+# # disable bluetooth and wifi 
+# # disabled from bios !!!
 # sudo systemctl disable bluetooth.service
 # sudo ifconfig wlp4s0 down
 
-# fix mounts
+# # fix mounts
 # sudo mkdir -p /mnt/storage
 # STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
 # echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
 
-sudo mkdir -p /mnt/raid
-RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md127)
-echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cut -d' ' -f3)     defaults        0 0" | sudo tee -a  /etc/fstab
+# sudo mkdir -p /mnt/raid
+# RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md127)
+# echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cut -d' ' -f3)     defaults        0 0" | sudo tee -a  /etc/fstab
 
-sudo systemctl daemon-reload
+# sudo systemctl daemon-reload
 
-# set static ip
-https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
-nmcli connection
-sudo nmcli connection modify enp3s0 ipv4.addresses 192.168.0.200/24
-sudo nmcli connection modify enp3s0 ipv4.gateway 192.168.0.1
-sudo nmcli connection modify enp3s0 ipv4.method manual
-sudo nmcli connection modify enp3s0 ipv4.dns "1.1.1.1,1.0.0.1"
+# # set static ip
+# https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
+# nmcli connection
+# sudo nmcli connection modify enp3s0 ipv4.addresses 192.168.0.200/24
+# sudo nmcli connection modify enp3s0 ipv4.gateway 192.168.0.1
+# sudo nmcli connection modify enp3s0 ipv4.method manual
+# sudo nmcli connection modify enp3s0 ipv4.dns "1.1.1.1,1.0.0.1"
 
-sudo nmcli connection up enp3s0
-sudo nmcli device show enp3s0
+# sudo nmcli connection up enp3s0
+# sudo nmcli device show enp3s0
 
 
-# install docker
-sudo dnf remove docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-                  docker-logrotate \
-                  docker-selinux \
-                  docker-engine-selinux \
-                  docker-engine
+# # install docker
+# sudo dnf remove docker \
+#                   docker-client \
+#                   docker-client-latest \
+#                   docker-common \
+#                   docker-latest \
+#                   docker-latest-logrotate \
+#                   docker-logrotate \
+#                   docker-selinux \
+#                   docker-engine-selinux \
+#                   docker-engine
 
-sudo dnf install -y dnf-plugins-core
-sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# sudo dnf install -y dnf-plugins-core
+# sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+# sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-if [ -f "/etc/docker/daemon.json" ]; then
-  sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
-else
-  sudo mkdir -p /etc/docker/
-  sudo tee /etc/docker/daemon.json <<EOF
-{
-  "data-root": "/mnt/raid/docker",
-  "storage-driver": "overlay2",
-  "selinux-enabled": true
-}
-EOF
-fi
+# if [ -f "/etc/docker/daemon.json" ]; then
+#   sudo mv /etc/docker/daemon.json /etc/docker/daemon.json.bak
+# else
+#   sudo mkdir -p /etc/docker/
+#   sudo tee /etc/docker/daemon.json <<EOF
+# {
+#   "data-root": "/mnt/raid/docker",
+#   "storage-driver": "overlay2",
+#   "selinux-enabled": true
+# }
+# EOF
+# fi
 
-sudo usermod -aG docker "$USER"
-sudo systemctl enable docker
-sudo systemctl start docker
+# sudo usermod -aG docker "$USER"
+# sudo systemctl enable docker
+# sudo systemctl start docker
 
-# cloudflared
-wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudflared-linux-x86_64.rpm
-sudo dnf install -y cloudflared-linux-x86_64.rpm
-rm cloudflared-linux-x86_64.rpm
+# # cloudflared
+# wget https://github.com/cloudflare/cloudflared/releases/download/2024.9.1/cloudflared-linux-x86_64.rpm
+# sudo dnf install -y cloudflared-linux-x86_64.rpm
+# rm cloudflared-linux-x86_64.rpm
 
 #make an ssh key for s-builder
-ssh-keygen -t ed25519 -C "s-peper@hotmail.com" -q -N ""
+ssh-keygen -t ed25519 -C "s-peper@hotmail.com" -q -N "" -f ~/.ssh/id_rsa
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 
