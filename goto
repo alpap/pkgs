@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+COMMAND=$1
+ARGUMENT=$2
+
+if [[ -z "${COMMAND}" ]]; then
+  echo "Please pass arguments to the script"
+  exit 1
+fi
+
+CONFIG_DIR="$HOME/.config/goto"
+CONFIG_FILE_NAME="config.yml"
+
+if [ ! -d "$CONFIG_DIR" ]; then
+  mkdir -p "$CONFIG_DIR"
+  touch "${CONFIG_FILE_DIR}/${CONFIG_FILE_NAME}"
+fi
+
+case $COMMAND in
+
+list)
+  echo -n "Lithuanian"
+  ;;
+
+alias)
+  echo -n "Romanian"
+  ;;
+
+Italy | "San Marino" | Switzerland | "Vatican City")
+  echo -n "Italian"
+  ;;
+
+*)
+  echo -n "unknown"
+  ;;
+esac
