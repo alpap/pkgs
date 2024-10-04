@@ -4,6 +4,7 @@ set -euo pipefail
 
 COMMAND=$1
 ALIAS=${2:-$(basename "$(pwd)")}
+
 if [[ -z "${COMMAND}" ]]; then
   echo "Please pass arguments to the script"
   exit 1
@@ -23,40 +24,74 @@ if [ ! -f "$CONFIG_FILE_PATH" ]; then
   echo "Creating file $CONFIG_FILE_PATH"
 fi
 
+function install(){
+    cat >/etc/myconfig.conf <<EOL
+    function goto {
+      local array=("list" "add" "install" "remove")
+      if [[ \${array[@]} =~ \$value ]]
+        cd
+        exit 0
+      }
+    }
+    EOL
+}
 case $COMMAND in
+
+
+
+install)
+
+  ;;
 
 list)
   cat "$CONFIG_FILE_PATH"
   ;;
 
 add)
-  if grep -R "$ALIAS" "$CONFIG_FILE_PATH"; then
-    echo ""
-    echo "The alias already exists"
-    exit 1
-  fi
+  while IFS= read -r line; do
+    EXISTING_ALIAS=$(echo "$line" | cut -d':' -f1)
+    if [[ "${EXISTING_ALIAS}" == "${ALIAS}" ]]; then
+      cat "$CONFIG_FILE_PATH"
+      exit 1
+    fi
+    echo "$line" >>"$CONFIG_FILE_PATH"_new
+  done <"$CONFIG_FILE_PATH"
   echo "$ALIAS:$(pwd)" >>"$CONFIG_FILE_PATH"
-  echo "Added alias $ALIAS:$(pwd) to list"
+  cat "$CONFIG_FILE_PATH"
   ;;
 
 remove)
-  if grep -R "$ALIAS" "$CONFIG_FILE_PATH"; then
-    sed -i "/\b\($ALIAS\)\b/d" "$CONFIG_FILE_PATH"
-    echo "Removed alias $ALIAS:$(pwd)"
-    exit 0
+  while IFS= read -r line; do
+    if [[ -z "$line" ]]; then
+      echo "File empty or malformed"
+      exit 1
+    fi
+    EXISTING_ALIAS=$(echo "$line" | cut -d':' -f1)
+    if [[ "${EXISTING_ALIAS}" == "${ALIAS}" ]]; then
+      echo "Removed alias $ALIAS:$(pwd)"
+      continue
+    fi
+    echo "$line" >>"$CONFIG_FILE_PATH"_new
+  done <"$CONFIG_FILE_PATH"
+  if [[ ! -f "$CONFIG_FILE_PATH"_new ]]; then
+    touch "$CONFIG_FILE_PATH"_new
   fi
+  mv "$CONFIG_FILE_PATH"_new "$CONFIG_FILE_PATH"
   cat "$CONFIG_FILE_PATH"
-  echo ""
-  echo "The alias specified does not exist"
   ;;
 
 *)
-  LINE=$(grep -R "$ALIAS" "$CONFIG_FILE_PATH")
-  PATH=$(echo "$LINE" | cut -d':' -f2)
-  if [[ -z "$PATH" ]]; then
-    echo "The alias specified does not exist"
-    exit 1
-  fi
-  cd "$PATH"
+  while IFS= read -r line; do
+    EXISTING_ALIAS=$(echo "$line" | cut -d':' -f1)
+    if [[ "${EXISTING_ALIAS}" == "${COMMAND}" ]]; then
+      PATH=$(echo "$line" | cut -d':' -f2)
+      echo "$PATH"
+      exit 0
+    fi
+  done <"$CONFIG_FILE_PATH"
+  echo "The alias specified does not exist"
+  cat ""
+  cat "$CONFIG_FILE_PATH"
+  exit 1
   ;;
 esac
