@@ -42,7 +42,7 @@ sudo systemctl restart sshd
 # echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
 
 sudo mkdir -p /mnt/raid
-RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md127)
+RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md)
 echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cut -d' ' -f3)     defaults        0 0" | sudo tee -a  /etc/fstab
 
 sudo systemctl daemon-reload
