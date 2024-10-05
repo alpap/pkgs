@@ -31,15 +31,15 @@ ssh-import-id gh:"$USER"
 sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 sudo systemctl restart sshd
 
-disable bluetooth and wifi 
+#disable bluetooth and wifi 
 disabled from bios !!!
 sudo systemctl disable bluetooth.service
 sudo ifconfig wlp4s0 down
 
-fix mounts
-sudo mkdir -p /mnt/storage
-STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
-echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
+# # fix mounts
+# sudo mkdir -p /mnt/storage
+# STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
+# echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
 
 sudo mkdir -p /mnt/raid
 RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md127)
@@ -51,13 +51,14 @@ sudo systemctl daemon-reload
 # https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
 #! get card name before eunning this 
 nmcli connection
-sudo nmcli connection modify enp4s0 ipv4.addresses 192.168.0.200/24
-sudo nmcli connection modify enp4s0 ipv4.gateway 192.168.0.1
-sudo nmcli connection modify enp4s0 ipv4.method manual
-sudo nmcli connection modify enp4s0 ipv4.dns "1.1.1.1,1.0.0.1"
+DEVICE=$(nmcli connection | grep ethernet | cut -d' ' -f1)
+sudo nmcli connection modify $DEVICE ipv4.addresses 192.168.0.200/24
+sudo nmcli connection modify $DEVICE ipv4.gateway 192.168.0.1
+sudo nmcli connection modify $DEVICE ipv4.method manual
+sudo nmcli connection modify $DEVICE ipv4.dns "1.1.1.1,1.0.0.1"
 
-sudo nmcli connection up enp4s0
-sudo nmcli device show enp4s0
+sudo nmcli connection up $DEVICE
+sudo nmcli device show $DEVICE
 
 
 # install docker
