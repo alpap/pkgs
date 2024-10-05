@@ -9,6 +9,10 @@ sudo hostnamectl set-hostname --static banana
 # expand size 
 sudo lvextend -L+216G --resizefs /dev/mapper/fedora-root
 
+# add group 
+sudo groupadd mages
+sudo usermod --append --groups mages $USER
+
 # install ssh service
 sudo dnf update -y
 sudo dnf install -y openssh-server
