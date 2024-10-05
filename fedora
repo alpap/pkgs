@@ -48,15 +48,16 @@ echo "UUID=$(echo $RAID| cut -d' ' -f2) /mnt/raid               $(echo $RAID| cu
 sudo systemctl daemon-reload
 
 # set static ip
-https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
+# https://www.server-world.info/en/note?os=Fedora_40&p=initial_conf&f=3
+#! get card name before eunning this 
 nmcli connection
-sudo nmcli connection modify enp3s0 ipv4.addresses 192.168.0.200/24
-sudo nmcli connection modify enp3s0 ipv4.gateway 192.168.0.1
-sudo nmcli connection modify enp3s0 ipv4.method manual
-sudo nmcli connection modify enp3s0 ipv4.dns "1.1.1.1,1.0.0.1"
+sudo nmcli connection modify enp4s0 ipv4.addresses 192.168.0.200/24
+sudo nmcli connection modify enp4s0 ipv4.gateway 192.168.0.1
+sudo nmcli connection modify enp4s0 ipv4.method manual
+sudo nmcli connection modify enp4s0 ipv4.dns "1.1.1.1,1.0.0.1"
 
-sudo nmcli connection up enp3s0
-sudo nmcli device show enp3s0
+sudo nmcli connection up enp4s0
+sudo nmcli device show enp4s0
 
 
 # install docker
