@@ -9,9 +9,7 @@ sudo hostnamectl set-hostname --static banana
 # expand size 
 sudo lvextend -L+416G --resizefs /dev/mapper/fedora-root
 
-# add group 
-sudo groupadd mages
-sudo usermod --append --groups mages $USER
+
 
 # install ssh service
 sudo dnf update -y
@@ -186,6 +184,15 @@ disabled = true
 disabled = false
 symbol = '🍌 '
 EOT
+
+
+# add group 
+sudo groupadd mages
+sudo usermod --append --groups mages $USER
+
+# Make server folder
+sudo mkdir /server
+sudo chgrp mages /server
 
 # restart
 sudo reboot
