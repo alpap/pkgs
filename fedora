@@ -6,40 +6,40 @@ set -ex
 sudo hostnamectl set-hostname --pretty 🍌
 sudo hostnamectl set-hostname --static banana
 
-## expand size 
-# sudo lvextend -L+216G --resizefs /dev/mapper/fedora-root
+# expand size 
+sudo lvextend -L+416G --resizefs /dev/mapper/fedora-root
 
-## add group 
-# sudo groupadd mages
-# sudo usermod --append --groups mages $USER
+# add group 
+sudo groupadd mages
+sudo usermod --append --groups mages $USER
 
-## install ssh service
-# sudo dnf update -y
-# sudo dnf install -y openssh-server
-# sudo systemctl enable sshd
-# sudo systemctl start sshd
-# sudo systemctl status sshd
-# sudo ss -lt
+# install ssh service
+sudo dnf update -y
+sudo dnf install -y openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshd
+sudo systemctl status sshd
+sudo ss -lt
 
-# # import ssh keys
-# sudo dnf install -y python3-pip
-# pip3 install --upgrade pip
-# pip3 install ssh-import-id
-# ssh-import-id gh:"$USER"
+# import ssh keys
+sudo dnf install -y python3-pip
+pip3 install --upgrade pip
+pip3 install ssh-import-id
+ssh-import-id gh:"$USER"
 
-# # remove password login
-# sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
-# sudo systemctl restart sshd
+# remove password login
+sudo sed -i -E 's/#?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo systemctl restart sshd
 
-# disable bluetooth and wifi 
-# disabled from bios !!!
-# sudo systemctl disable bluetooth.service
-# sudo ifconfig wlp4s0 down
+disable bluetooth and wifi 
+disabled from bios !!!
+sudo systemctl disable bluetooth.service
+sudo ifconfig wlp4s0 down
 
-# fix mounts
-# sudo mkdir -p /mnt/storage
-# STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
-# echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
+fix mounts
+sudo mkdir -p /mnt/storage
+STORAGE=$(lsblk -o NAME,UUID,FSTYPE | grep sdb1)
+echo "UUID=$(echo $STORAGE| cut -d' ' -f2) /mnt/storage            $(echo $STORAGE| cut -d' ' -f3)     defaults        0 0" | sudo tee -a /etc/fstab
 
 sudo mkdir -p /mnt/raid
 RAID=$(lsblk -o NAME,UUID,FSTYPE | grep md127)
