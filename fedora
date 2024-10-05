@@ -91,6 +91,9 @@ EOF
 fi
 sudo semanage fcontext -a -e /var/lib/docker /mnt/raid/docker
 
+dnf copr enable atim/lazydocker
+dnf install lazydocker
+
 sudo usermod -aG docker "$USER"
 sudo systemctl enable docker
 sudo systemctl start docker
