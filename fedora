@@ -7,8 +7,8 @@ sudo hostnamectl set-hostname --pretty 🍌
 sudo hostnamectl set-hostname --static banana
 
 # expand size 
-sudo lvextend -L+416G --resizefs /dev/mapper/fedora-root
-
+# sudo lvextend -L+416G --resizefs /dev/mapper/fedora-root
+sudo lvextend  -r -l +100%FREE  /dev/mapper/fedora-root
 
 
 # install ssh service
